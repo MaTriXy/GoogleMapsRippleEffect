@@ -1,3 +1,21 @@
+/*
+ * Copyright (C) 2016 Abhay Raj Singh Yadav
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+
+
 package com.arsy.maps_library;
 
 import android.animation.IntEvaluator;
@@ -79,19 +97,16 @@ public class MapRipple {
 
     public void withFillColor(int fillColor) {
         this.fillColor = fillColor;
-        setDrawableAndBitmap();
     }
 
 
     public void withStrokeColor(int strokeColor) {
         this.strokeColor = strokeColor;
-        setDrawableAndBitmap();
     }
 
 
     public void withStrokewidth(int strokewidth) {
         this.strokewidth = strokewidth;
-        setDrawableAndBitmap();
     }
 
 
@@ -215,60 +230,60 @@ public class MapRipple {
     }
 
     public void stopRippleMapAnimation() {
-        try {
-            for (int i = 0; i < numberOfRipples; i++) {
-                if (i == 0) {
-                    handlers[i].removeCallbacks(runnable1);
-                    vAnimators[i].cancel();
-                    gOverlays[i].remove();
+        if (isAnimationRunning) {
+            try {
+                for (int i = 0; i < numberOfRipples; i++) {
+                    if (i == 0) {
+                        handlers[i].removeCallbacks(runnable1);
+                        vAnimators[i].cancel();
+                        gOverlays[i].remove();
 
+                    }
+                    if (i == 1) {
+                        handlers[i].removeCallbacks(runnable2);
+                        vAnimators[i].cancel();
+                        gOverlays[i].remove();
+                    }
+                    if (i == 2) {
+                        handlers[i].removeCallbacks(runnable3);
+                        vAnimators[i].cancel();
+                        gOverlays[i].remove();
+                    }
+                    if (i == 3) {
+                        handlers[i].removeCallbacks(runnable4);
+                        vAnimators[i].cancel();
+                        gOverlays[i].remove();
+                    }
                 }
-                if (i == 1) {
-                    handlers[i].removeCallbacks(runnable2);
-                    vAnimators[i].cancel();
-                    gOverlays[i].remove();
-                }
-                if (i == 2) {
-                    handlers[i].removeCallbacks(runnable3);
-                    vAnimators[i].cancel();
-                    gOverlays[i].remove();
-                }
-                if (i == 3) {
-                    handlers[i].removeCallbacks(runnable4);
-                    vAnimators[i].cancel();
-                    gOverlays[i].remove();
-                }
+
+
+            } catch (Exception e) {
+
             }
-
-
-        } catch (Exception e) {
-
         }
         isAnimationRunning = false;
     }
 
     public void startRippleMapAnimation() {
-        drawable.setColor(fillColor);
-        float d = Resources.getSystem().getDisplayMetrics().density;
-        int width = (int) (strokewidth * d); // margin in pixels
-        drawable.setStroke(width, strokeColor);
-        backgroundImage = drawableToBitmap(drawable);
-        for (int i = 0; i < numberOfRipples; i++) {
-            if (i == 0) {
-                handlers[i] = new Handler();
-                handlers[i].postDelayed(runnable1, durationBetweenTwoRipples * i);
-            }
-            if (i == 1) {
-                handlers[i] = new Handler();
-                handlers[i].postDelayed(runnable2, durationBetweenTwoRipples * i);
-            }
-            if (i == 2) {
-                handlers[i] = new Handler();
-                handlers[i].postDelayed(runnable3, durationBetweenTwoRipples * i);
-            }
-            if (i == 3) {
-                handlers[i] = new Handler();
-                handlers[i].postDelayed(runnable4, durationBetweenTwoRipples * i);
+        if (!isAnimationRunning) {
+            setDrawableAndBitmap();
+            for (int i = 0; i < numberOfRipples; i++) {
+                if (i == 0) {
+                    handlers[i] = new Handler();
+                    handlers[i].postDelayed(runnable1, durationBetweenTwoRipples * i);
+                }
+                if (i == 1) {
+                    handlers[i] = new Handler();
+                    handlers[i].postDelayed(runnable2, durationBetweenTwoRipples * i);
+                }
+                if (i == 2) {
+                    handlers[i] = new Handler();
+                    handlers[i].postDelayed(runnable3, durationBetweenTwoRipples * i);
+                }
+                if (i == 3) {
+                    handlers[i] = new Handler();
+                    handlers[i].postDelayed(runnable4, durationBetweenTwoRipples * i);
+                }
             }
         }
         isAnimationRunning = true;
